@@ -1,26 +1,86 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-obsidian: #08080a;
+  --color-onyx: #040406;
+  --color-carbon: #121317;
+  --color-graphite: #1c1d22;
+  --color-slate: #2e3038;
+  --color-smoke: #464853;
+  --color-ash: #5e616e;
+  --color-steel: #777a88;
+  --color-fog: #9194a1;
+  --color-mist: #acafb9;
+  --color-silver: #c7c9d1;
+  --color-bone: #e2e3e9;
+  --color-paper-white: #ffffff;
+  --color-copper: #cc9166;
+  --color-copper-hi: #e0ac82;
+  --color-ok: #7fae8e;
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  --radius-card: 10px;
+  --radius-pill: 9999px;
+  --radius-sm: 2px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --tracking-display: 0.01em;
+  --pad: clamp(1.1rem, 4vw, 2.5rem);
+  --section-gap: clamp(3.5rem, 8vw, 10rem);
+  --gilded: linear-gradient(103deg, rgb(174, 147, 87), rgb(255, 240, 204) 40%, rgb(174, 147, 87) 70%, rgba(189, 157, 79, 0));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--color-obsidian);
+  color: var(--color-bone);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--color-copper); color: #1a0f06; }
+:focus-visible { outline: 2px solid var(--color-copper); outline-offset: 3px; border-radius: 4px; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+:root {
+  --wa-green: #25d366;
+  --wa-green-hover: #2ee073;
 }
