@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import ScrollProgress from "@/components/ui/ScrollProgress";
+import BackToTop from "@/components/ui/BackToTop";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -16,9 +19,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export const viewport: Viewport = {
-  themeColor: "#08080a",
-};
+export const viewport: Viewport = { themeColor: "#08080a" };
 
 export const metadata: Metadata = {
   title: "Taller GRS · Mecánica europea de precisión en Viña del Mar",
@@ -41,10 +42,13 @@ export default function RootLayout({
     <html
       lang="es"
       className={`${playfair.variable} ${inter.variable} antialiased`}
-      style={{ scrollBehavior: "smooth" }}
+      style={{ scrollBehavior: "auto" }}
     >
       <body className="min-h-screen bg-obsidian text-bone font-body">
+        <SmoothScroll />
+        <ScrollProgress />
         {children}
+        <BackToTop />
       </body>
     </html>
   );

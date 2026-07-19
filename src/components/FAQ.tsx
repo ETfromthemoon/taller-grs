@@ -1,48 +1,54 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion";
 import { Plus } from "lucide-react";
 import { FAQS } from "@/lib/data";
 
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (inView) controls.start("visible");
+  }, [inView, controls]);
 
   return (
-    <section id="faq" className="py-[clamp(3.5rem,8vw,10rem)] relative z-10">
+    <motion.section
+      ref={ref}
+      id="faq"
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { filter: "blur(16px)", opacity: 0 },
+        visible: { filter: "blur(0px)", opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+      }}
+      className="relative z-10 py-28 sm:py-32"
+    >
       <div className="mx-auto max-w-[820px] px-[--pad]">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-10 text-center"
-        >
-          <span className="mb-4 inline-block text-[13px] font-semibold tracking-[-0.02em] text-copper">
-            // Preguntas frecuentes
+        <div className="mb-12 text-center">
+          <span className="mb-3 inline-block font-body text-[11px] font-semibold uppercase tracking-[0.08em] text-copper">
+            Preguntas
           </span>
-          <h2 className="font-display text-[clamp(2rem,3.5vw,3.25rem)] font-normal text-paper-white">
+          <h2 className="font-display text-[clamp(2rem,3.5vw,3.25rem)] font-normal leading-[1.05] text-paper-white">
             Antes de dejar tu auto.
           </h2>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div>
           {FAQS.map((faq, i) => (
             <div key={i} className="border-b border-graphite">
               <button
                 onClick={() => setOpenIdx(openIdx === i ? null : i)}
-                className="flex w-full items-center justify-between gap-6 py-5 text-left font-display text-xl font-normal text-paper-white"
+                className="flex w-full items-center justify-between gap-6 py-5 text-left font-display text-xl font-normal text-paper-white hover:text-paper-white/90 transition-colors"
               >
                 {faq.q}
                 <motion.span
                   animate={{ rotate: openIdx === i ? 45 : 0 }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className={`flex h-6 w-6 flex-none items-center justify-center rounded-full border ${
+                  className={`flex h-6 w-6 flex-none items-center justify-center rounded-full border transition-colors ${
                     openIdx === i
                       ? "border-copper bg-copper text-[#1a0f06]"
                       : "border-slate text-copper"
@@ -68,8 +74,8 @@ export default function FAQ() {
               </AnimatePresence>
             </div>
           ))}
-        </motion.div>
+        </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

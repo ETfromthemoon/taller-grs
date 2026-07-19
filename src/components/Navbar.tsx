@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { waLink, GREETING } from "@/lib/data";
 
@@ -13,23 +13,23 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { scrollY } = useScroll();
+  const navbarBg = useTransform(scrollY, [0, 80], ["rgba(8,8,10,0)", "rgba(8,8,10,0.92)"]);
+  const navbarBlur = useTransform(scrollY, [0, 80], ["blur(0px)", "blur(12px)"]);
+  const navbarBorder = useTransform(scrollY, [0, 80], ["rgba(28,29,34,0)", "rgba(28,29,34,1)"]);
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
-        scrolled ? "border-b border-graphite bg-obsidian/90 backdrop-blur-xl" : ""
-      }`}
+    <motion.header
+      style={{
+        backgroundColor: navbarBg,
+        backdropFilter: navbarBlur,
+        borderBottomColor: navbarBorder,
+      }}
+      className="fixed top-0 inset-x-0 z-50 border-b border-transparent"
     >
       <div className="mx-auto flex max-w-[1216px] items-center justify-between gap-4 px-[--pad] py-3.5">
-        <a href="#top" className="flex items-center gap-2.5 font-display text-xl text-paper-white tracking-display font-medium">
+        <a href="#top" className="flex items-center gap-2.5 font-display text-xl text-paper-white tracking-[0.01em] font-medium">
           <span className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-paper-white text-sm font-bold tracking-tight text-black font-body">
             GRS
           </span>
@@ -99,19 +99,10 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="mt-2 flex gap-2.5">
-                <a
-                  href="#cotizador"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex-1 rounded-full border border-paper-white py-2.5 text-center text-[13px] font-medium text-paper-white"
-                >
+                <a href="#cotizador" onClick={() => setMobileOpen(false)} className="flex-1 rounded-full border border-paper-white py-2.5 text-center text-[13px] font-medium text-paper-white">
                   Cotizar ahora
                 </a>
-                <a
-                  href={waLink(GREETING)}
-                  target="_blank"
-                  rel="noopener"
-                  className="flex-1 rounded-full bg-paper-white py-2.5 text-center text-[13px] font-medium text-black"
-                >
+                <a href={waLink(GREETING)} target="_blank" rel="noopener" className="flex-1 rounded-full bg-paper-white py-2.5 text-center text-[13px] font-medium text-black">
                   WhatsApp
                 </a>
               </div>
@@ -119,6 +110,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

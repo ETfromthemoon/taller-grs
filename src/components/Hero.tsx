@@ -1,22 +1,20 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, BarChart3 } from "lucide-react";
-import { waLink, GREETING } from "@/lib/data";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { GREETING, waLink } from "@/lib/data";
 
 function AnimatedCounter({
   target,
   prefix,
   suffix,
   label,
-  duration = 1100,
 }: {
   target: number;
   prefix?: string;
   suffix?: string;
   label: string;
-  duration?: number;
 }) {
   const [count, setCount] = useState(0);
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -31,9 +29,8 @@ function AnimatedCounter({
           counted.current = true;
           const start = performance.now();
           const step = (t: number) => {
-            const p = Math.min(1, (t - start) / duration);
-            const eased = 1 - Math.pow(1 - p, 3);
-            setCount(Math.round(target * eased));
+            const p = Math.min(1, (t - start) / 1400);
+            setCount(Math.round(target * (1 - Math.pow(1 - p, 3))));
             if (p < 1) requestAnimationFrame(step);
           };
           requestAnimationFrame(step);
@@ -43,12 +40,14 @@ function AnimatedCounter({
     );
     obs.observe(el);
     return () => obs.disconnect();
-  }, [target, duration]);
+  }, [target]);
 
   return (
     <div ref={nodeRef} className="flex flex-col">
       <b className="font-display text-[28px] font-normal leading-none text-paper-white">
-        {prefix}{count}{suffix}
+        {prefix}
+        {count}
+        {suffix}
       </b>
       <span className="mt-1.5 max-w-[18ch] text-[13px] text-fog">{label}</span>
     </div>
@@ -75,13 +74,20 @@ function DiagnosticoPanel() {
     return () => obs.disconnect();
   }, []);
 
+  const { scrollYProgress } = useScroll({
+    target: panelRef,
+    offset: ["start end", "end start"],
+  });
+  const panelY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+
   return (
     <motion.div
       ref={panelRef}
-      initial={{ opacity: 0, x: 30 }}
+      style={{ y: panelY }}
+      initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-[10px] border border-graphite bg-onyx p-6"
+      transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="rounded-[10px] border border-graphite bg-onyx p-6 shadow-[0_8px_30px_-4px_rgba(0,0,0,0.25)]"
     >
       <div className="mb-4 flex items-center justify-between">
         <span className="text-[11px] font-medium tracking-[0.04em] text-fog">
@@ -99,11 +105,12 @@ function DiagnosticoPanel() {
           { val: 14, unit: "v", label: "Batería" },
           { val: 38, unit: "psi", label: "Presión" },
         ].map((g, i) => (
-          <div
+          <motion.div
             key={i}
-            className={`rounded-[10px] border border-graphite bg-carbon px-3 py-3 text-center ${
-              g.hot ? "" : ""
-            }`}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
+            className="rounded-[10px] border border-graphite bg-carbon px-3 py-3 text-center"
           >
             <div
               className={`font-display text-[22px] tabular-nums ${
@@ -116,7 +123,7 @@ function DiagnosticoPanel() {
             <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.06em] text-fog">
               {g.label}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
@@ -130,13 +137,16 @@ function DiagnosticoPanel() {
           <div key={i} className="grid grid-cols-[88px_1fr_auto] items-center gap-2.5 text-[11.5px]">
             <span className="text-fog">{bar.name}</span>
             <span className="h-1.5 overflow-hidden rounded-full bg-graphite">
-              <span
-                className="block h-full rounded-full transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              <motion.span
+                className="block h-full rounded-full"
                 style={{
                   width: barsAnimated ? `${bar.pct}%` : "0%",
                   background:
                     "linear-gradient(103deg, rgb(174,147,87), rgb(255,240,204) 40%, rgb(174,147,87) 70%, rgba(189,157,79,0))",
                 }}
+                initial={{ width: "0%" }}
+                animate={{ width: barsAnimated ? `${bar.pct}%` : "0%" }}
+                transition={{ duration: 1.3, delay: 0.2 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               />
             </span>
             <span className="tabular-nums text-silver">{bar.pct}%</span>
@@ -148,8 +158,11 @@ function DiagnosticoPanel() {
 }
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+
   return (
     <section
+      ref={sectionRef}
       id="inicio"
       className="relative pt-[clamp(6rem,10vw,8rem)] pb-[clamp(3rem,6vw,6rem)]"
     >
@@ -168,7 +181,7 @@ export default function Hero() {
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="font-display text-[clamp(2.6rem,5vw,4.75rem)] font-normal leading-[1.05] tracking-[0.01em] text-paper-white"
           >
             La precisión de un{" "}
@@ -195,7 +208,7 @@ export default function Hero() {
           >
             <a
               href="#cotizador"
-              className="inline-flex items-center gap-2 rounded-full bg-paper-white px-6 py-3 text-[15px] font-medium text-black transition-all hover:-translate-y-0.5 hover:bg-[#f2f2f2]"
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-paper-white px-6 py-3 text-[15px] font-medium text-black transition-all hover:-translate-y-0.5 hover:bg-[#f2f2f2]"
             >
               Cotizar con IA en 30 seg
               <ArrowRight size={16} />
@@ -223,12 +236,7 @@ export default function Hero() {
                 mecánico titulado, U. Federico Santa María
               </span>
             </div>
-            <AnimatedCounter
-              target={8}
-              prefix="+"
-              label="marcas europeas y multimarca"
-              duration={1400}
-            />
+            <AnimatedCounter target={8} prefix="+" label="marcas europeas y multimarca" />
           </motion.div>
         </div>
 

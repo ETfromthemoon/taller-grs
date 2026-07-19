@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView, useAnimation } from "framer-motion";
+import { useEffect, useRef } from "react";
 import { Check } from "lucide-react";
 
 const creds = [
@@ -11,19 +12,32 @@ const creds = [
 ];
 
 export default function About() {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const controls = useAnimation();
+
+  useEffect(() => {
+    if (inView) controls.start("visible");
+  }, [inView, controls]);
+
   return (
-    <section id="nosotros" className="py-[clamp(3.5rem,8vw,10rem)] relative z-10">
-      <div className="mx-auto grid max-w-[1216px] grid-cols-1 items-center gap-10 px-[--pad] lg:grid-cols-[0.9fr_1.1fr]">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="mb-4 inline-block text-[13px] font-semibold tracking-[-0.02em] text-copper">
-            // Quiénes somos
+    <motion.section
+      ref={ref}
+      id="nosotros"
+      initial="hidden"
+      animate={controls}
+      variants={{
+        hidden: { filter: "blur(16px)", opacity: 0 },
+        visible: { filter: "blur(0px)", opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+      }}
+      className="relative z-10 py-28 sm:py-32"
+    >
+      <div className="mx-auto grid max-w-[1216px] grid-cols-1 items-center gap-12 px-[--pad] lg:grid-cols-[0.9fr_1.1fr]">
+        <div>
+          <span className="mb-3 inline-block font-body text-[11px] font-semibold uppercase tracking-[0.08em] text-copper">
+            Trayectoria
           </span>
-          <h2 className="font-display text-[clamp(2rem,3.5vw,3.25rem)] font-normal text-paper-white">
+          <h2 className="font-display text-[clamp(2rem,3.5vw,3.25rem)] font-normal leading-[1.05] text-paper-white">
             GRS: 20 años de mano técnica, no de improvisación.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-fog max-w-[52ch]">
@@ -36,14 +50,13 @@ export default function About() {
             Autos particulares, flotas de empresa y maquinaria agroindustrial: si
             tiene motor, lo atendemos.
           </p>
-        </motion.div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="rounded-[10px] border border-graphite bg-onyx px-8 py-4"
+          initial={{ opacity: 0, x: 30 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-[10px] border border-graphite bg-onyx px-8 py-4 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.15)]"
         >
           {creds.map((c, i) => (
             <div
@@ -57,12 +70,12 @@ export default function About() {
               </span>
               <div>
                 <b className="font-body text-[15px] font-semibold text-paper-white">{c.title}</b>
-                <p className="mt-1 text-[14px] text-fog">{c.desc}</p>
+                <p className="mt-1 text-[14px] leading-relaxed text-fog">{c.desc}</p>
               </div>
             </div>
           ))}
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }
