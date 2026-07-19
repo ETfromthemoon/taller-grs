@@ -170,10 +170,11 @@ export default function QuoteEngine() {
 
               <div className="mt-5 grid grid-cols-2 gap-3.5">
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                  <label htmlFor="quote-marca" className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                     Marca
                   </label>
                   <select
+                    id="quote-marca"
                     value={marca}
                     onChange={(e) => setMarca(e.target.value)}
                     className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone transition-colors focus:border-copper focus:outline-none appearance-none cursor-pointer"
@@ -190,24 +191,26 @@ export default function QuoteEngine() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                  <label htmlFor="quote-modelo" className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                     Modelo
                   </label>
                   <input
+                    id="quote-modelo"
                     value={modelo}
                     onChange={(e) => setModelo(e.target.value)}
                     placeholder="Ej: A4 2.0 TFSI"
-                    className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-ash transition-colors focus:border-copper focus:outline-none"
+                    className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-steel transition-colors focus:border-copper focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3.5">
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                  <label htmlFor="quote-anio" className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                     Año
                   </label>
                   <select
+                    id="quote-anio"
                     value={anio}
                     onChange={(e) => setAnio(e.target.value)}
                     className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone transition-colors focus:border-copper focus:outline-none appearance-none cursor-pointer"
@@ -226,24 +229,26 @@ export default function QuoteEngine() {
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                  <label htmlFor="quote-km" className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                     Kilometraje
                   </label>
                   <input
+                    id="quote-km"
                     value={km}
                     onChange={(e) => setKm(e.target.value)}
                     inputMode="numeric"
                     placeholder="Ej: 85000"
-                    className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-ash transition-colors focus:border-copper focus:outline-none"
+                    className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-steel transition-colors focus:border-copper focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="mt-4">
-                <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                <label htmlFor="quote-servicio" className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                   Servicio principal
                 </label>
                 <select
+                  id="quote-servicio"
                   value={servicioId}
                   onChange={(e) => setServicioId(e.target.value)}
                   className="w-full rounded-full border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone transition-colors focus:border-copper focus:outline-none appearance-none cursor-pointer"
@@ -261,7 +266,7 @@ export default function QuoteEngine() {
               </div>
 
               <div className="mt-4">
-                <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ash">
+                <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-steel">
                   Síntomas o extras
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -280,12 +285,16 @@ export default function QuoteEngine() {
                     </button>
                   ))}
                 </div>
+                <label htmlFor="quote-detalle" className="sr-only">
+                  Síntomas o extras
+                </label>
                 <textarea
+                  id="quote-detalle"
                   value={detalle}
                   onChange={(e) => setDetalle(e.target.value)}
                   placeholder="Describe lo que notas en tu vehículo…"
                   rows={3}
-                  className="mt-3 w-full rounded-2xl border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-ash transition-colors focus:border-copper focus:outline-none resize-y min-h-[76px]"
+                  className="mt-3 w-full rounded-2xl border border-graphite bg-carbon px-4 py-3 text-[15px] text-bone placeholder:text-steel transition-colors focus:border-copper focus:outline-none resize-y min-h-[76px]"
                 />
               </div>
 
@@ -321,7 +330,7 @@ export default function QuoteEngine() {
               </div>
 
               {!thinking && !quote && (
-                <div className="flex min-h-[340px] flex-col items-center justify-center gap-4 text-center text-ash">
+                <div className="flex min-h-[340px] flex-col items-center justify-center gap-4 text-center text-steel">
                   <Brain size={48} className="text-graphite" />
                   <p className="max-w-[30ch] text-[14px]">
                     Completá los datos y presioná <b>Generar cotización</b>. Tu estimación aparece aquí en segundos.
@@ -335,6 +344,8 @@ export default function QuoteEngine() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    role="status"
+                    aria-live="polite"
                     className="flex min-h-[340px] flex-col justify-center gap-3"
                   >
                     {[
@@ -350,7 +361,7 @@ export default function QuoteEngine() {
                         animate={{
                           opacity: thinkStep > i ? 1 : 0.3,
                           x: thinkStep > i ? 0 : -6,
-                          color: thinkStep > i ? "var(--color-silver)" : "var(--color-ash)",
+                          color: thinkStep > i ? "var(--color-silver)" : "var(--color-steel)",
                         }}
                         transition={{ duration: 0.3 }}
                         className="flex items-center gap-2.5 text-[14px]"
@@ -386,7 +397,7 @@ export default function QuoteEngine() {
                         <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-graphite px-4 py-3 text-[13px]">
                           <div>
                             <span>Mano de obra{quote.brandMult > 1 ? ` · línea ${marca}` : ""}</span>
-                            <span className="block text-[11px] text-ash mt-0.5">Servicio: {quote.svc.name}</span>
+                            <span className="block text-[11px] text-steel mt-0.5">Servicio: {quote.svc.name}</span>
                           </div>
                           <span className="tabular-nums text-bone self-center whitespace-nowrap">{CLP(quote.labor)}</span>
                         </div>
@@ -394,7 +405,7 @@ export default function QuoteEngine() {
                           <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-graphite px-4 py-3 text-[13px]">
                             <div>
                               <span>Repuestos e insumos</span>
-                              <span className="block text-[11px] text-ash mt-0.5">Rango estimado según diagnóstico</span>
+                              <span className="block text-[11px] text-steel mt-0.5">Rango estimado según diagnóstico</span>
                             </div>
                             <span className="tabular-nums text-bone self-center whitespace-nowrap">{CLP(quote.partsLo)} – {CLP(quote.partsHi)}</span>
                           </div>
@@ -403,7 +414,7 @@ export default function QuoteEngine() {
                           <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-graphite px-4 py-3 text-[13px]">
                             <div>
                               <span>Traslado a domicilio</span>
-                              <span className="block text-[11px] text-ash mt-0.5">Dentro de la V Región</span>
+                              <span className="block text-[11px] text-steel mt-0.5">Dentro de la V Región</span>
                             </div>
                             <span className="tabular-nums text-bone self-center whitespace-nowrap">{CLP(quote.travel)}</span>
                           </div>
@@ -444,7 +455,7 @@ export default function QuoteEngine() {
                           Copiar
                         </button>
                       </div>
-                      <p className="mt-4 text-[11px] leading-relaxed text-ash">
+                      <p className="mt-4 text-[11px] leading-relaxed text-steel">
                         * Estimación referencial generada con datos de prueba. El valor final se confirma tras el diagnóstico presencial.
                       </p>
                     </motion.div>
@@ -463,6 +474,8 @@ export default function QuoteEngine() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
+            role="status"
+            aria-live="polite"
             className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] rounded-[10px] border border-slate bg-carbon px-5 py-3.5 text-[14px] text-bone flex items-center gap-2.5 shadow-lg"
           >
             <Check size={16} className="text-ok" />

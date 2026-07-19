@@ -35,7 +35,7 @@ export default function Navbar() {
           </span>
           <span>
             Taller GRS
-            <small className="block font-body text-[10px] text-ash tracking-[0.1em] font-normal">
+            <small className="block font-body text-[10px] text-steel tracking-[0.1em] font-normal">
               MECÁNICA EUROPEA · VIÑA DEL MAR
             </small>
           </span>

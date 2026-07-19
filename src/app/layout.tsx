@@ -4,6 +4,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/ui/SmoothScroll";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import BackToTop from "@/components/ui/BackToTop";
+import MotionProvider from "@/components/ui/MotionProvider";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -45,10 +46,12 @@ export default function RootLayout({
       style={{ scrollBehavior: "auto" }}
     >
       <body className="min-h-screen bg-obsidian text-bone font-body">
-        <SmoothScroll />
-        <ScrollProgress />
-        {children}
-        <BackToTop />
+        <MotionProvider>
+          <SmoothScroll />
+          <ScrollProgress />
+          {children}
+          <BackToTop />
+        </MotionProvider>
       </body>
     </html>
   );

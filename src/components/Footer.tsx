@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-ash">Servicios</h5>
+            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-steel">Servicios</h5>
             <a href="#servicios" className="mb-2.5 block text-[14px] text-fog transition-colors hover:text-copper">Mantención por km</a>
             <a href="#servicios" className="mb-2.5 block text-[14px] text-fog transition-colors hover:text-copper">Diagnóstico scanner</a>
             <a href="#servicios" className="mb-2.5 block text-[14px] text-fog transition-colors hover:text-copper">Chiptunning · DPF/EGR</a>
@@ -58,10 +58,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-ash">Horario</h5>
+            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-steel">Horario</h5>
             <p className="mb-1 text-[14px] text-fog">Lunes a Viernes</p>
             <p className="text-[14px] font-medium text-silver">8:30 – 18:00</p>
-            <h5 className="mb-4 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-ash">Ubicación</h5>
+            <h5 className="mb-4 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-steel">Ubicación</h5>
             <a href="https://maps.google.com/?q=Plath+1668+Santa+Ines+Viña+del+Mar" target="_blank" rel="noopener"
               className="text-[14px] text-fog transition-colors hover:text-copper">
               Plath 1668, Santa Inés<br />Viña del Mar
@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-ash">Contacto directo</h5>
+            <h5 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.12em] text-steel">Contacto directo</h5>
             <a href={waLink(GREETING)} target="_blank" rel="noopener"
               className="text-base font-medium text-copper-hi transition-colors hover:text-copper">
               +56 9 {WA_PHONE.slice(2, 6)} {WA_PHONE.slice(6)}
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-graphite pt-6 text-[12px] text-ash">
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-graphite pt-6 text-[12px] text-steel">
           <span>&copy; {year} Taller GRS · Viña del Mar, Chile</span>
           <span>Cotizador IA · Datos de prueba</span>
         </div>
